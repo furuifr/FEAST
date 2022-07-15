@@ -1,0 +1,7 @@
+dataset_name: 'mimic'
+# clf_name: 'logi'
+dsct_method: 'ratio'
+dsct_num: 8
+new_col_num: 30
+step: 3
+method: '_CMIM_pro10_'

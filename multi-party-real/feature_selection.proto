@@ -1,0 +1,73 @@
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.featureselection";
+option java_outer_classname = "FeatureSelectionProto";
+option objc_class_prefix = "FSP";
+
+package featureselection;
+
+// The greeting service definition.
+service MFS {
+  // Sends a greeting
+  rpc SendSamplingRowsAndTarget (SamplingRowsAndTarget) returns (Flag) {}
+  rpc SendCrossFeatures (CrossFeatures) returns (FeatureScores) {}
+  rpc GetMI (Flag) returns (FeatureScores) {}
+  rpc GetCrossFeatures (SelectedNum) returns (CrossFeatures) {}
+  rpc SendDelFeatures (DelNum) returns (Flag) {}
+  rpc GetSelectedFeatures (Flag) returns (SelectedFeatures) {}
+
+}
+
+message Flag {
+  bool flag = 1;
+}
+
+message SamplingRowsAndTarget {
+  repeated int32 row = 1;
+  repeated float target = 2;
+}
+
+message Array {
+  repeated int32 num = 1;
+}
+
+message FloatArray {
+  repeated float num = 1;
+}
+
+message CrossFeatures {
+  repeated string feature_name = 1;
+  repeated Array array = 2;
+}
+
+message SelectedFeatures {
+  repeated string feature_name = 1;
+  repeated FloatArray array = 2;
+}
+
+message SelectedNum {
+  int32 selected_num = 1;
+}
+
+message DelNum {
+  int32 del_num = 1;
+}
+
+message FeatureScores {
+  repeated float score = 1;
+}

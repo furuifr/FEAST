@@ -122,7 +122,7 @@ def sampling(data, target, sampling_method, bin, step, RANDOMSEED):
     if new_row>row:
         new_row = row
 
-    new_row = 6000
+    # new_row = 6000
 
     if sampling_method == "stratified" and new_row != row:
         X_train, X_test, y_train, y_test = train_test_split(data, target, train_size=new_row, stratify=target, random_state=RANDOMSEED)

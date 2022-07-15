@@ -332,7 +332,7 @@ def run():
         if return_dict[path[i]] is not None:
             df = pd.concat([df, return_dict[path[i]]], axis=1)
     acc_res = []
-    # acc_res.append(clf_cv('logi', df.copy().T.drop_duplicates().T, activeParty.target_ori))
+    acc_res.append(clf_cv('logi', df.copy().T.drop_duplicates().T, activeParty.target_ori))
     acc_res.append(clf_cv('svc', df.copy().T.drop_duplicates().reset_index(drop=True).T, activeParty.target_ori))
     acc_res.append(clf_cv('rfc', df.copy().T.drop_duplicates().reset_index(drop=True).T, activeParty.target_ori))
     acc_res.append(clf_cv('xgbc', df.copy().T.drop_duplicates().reset_index(drop=True).T, activeParty.target_ori))

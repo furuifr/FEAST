@@ -1,0 +1,22 @@
+# dataset_name: 'physionet'
+# target: 'In-hospital_death'
+# # clf_name: 'logi'
+# dsct_method: 'ratio'
+# dsct_num: 8
+# new_col_num: 15
+# step: 3
+# is_sampling: true
+# sampling_method: "stratified"
+# method: '_CMIM_pro10_'
+# party_num: 2
+dataset_name: 'mimic'
+target: 'y'
+# clf_name: 'logi'
+dsct_method: 'ratio'
+dsct_num: 8
+new_col_num: 15
+step: 3
+is_sampling: true
+sampling_method: "stratified"
+method: '_CMIM_pro10_'
+party_num: 2

@@ -4,7 +4,7 @@
 FEAST is a federated feature selection framework under VFL setting, who considers conditional mutual information (CMI) based feature selection, and utilizes CMI to identify features that are highly correlated with the label while having low redundancy between each other. The workflow of FEAST mainly consists of four stages: namely data pre-processing, statistical variable generation, feature score calculation, and feature ranking and selection.
 
 The files in the project are described as follows:
-- dataset: The two datasets introduced in the paper.
+- dataset: The four datasets introduced in the paper.
 - discretization: Implementation of data discretization (binning) methods.
 - filter: Implementation of statistical variable generation and feature score calculation.
 - multi-party-real: Implementation of FEAST in real multi-party scenarios.

@@ -18,5 +18,5 @@ new_col_num: 15
 step: 3
 is_sampling: true
 sampling_method: "stratified"
-method: '_CMIM_pro10_'
+method: '_FEAST_'
 party_num: 2

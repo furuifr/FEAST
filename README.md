@@ -30,15 +30,15 @@ protobuf 3.17.2
 ### FEAST in real multi-party scenarios: 
 The users needs to prepare multiple machines (one is active party and the others are passive parties). Then, placing the file whose filename with 'active' on the active party, and the file whose filename with 'passive' on the passive party. The rest of the files are required by all parties. Next, The users can run FEAST with the following commands:
 ```
-python multi-party-real/feature_selection_active_selectall.py
 python multi-party-real/feature_selection_passive_selectall.py
+python multi-party-real/feature_selection_active_selectall.py
 ```
 
 ### FEAST in simulated multi-party scenarios: 
 In this scenario, The users can simulate the multi-party feature selection process by modifying the profile.
 Taking mimic dataset as an example, the users can run FEAST with the following command:
 ```
-python multi-party-simulation/mimic_once/mimic_FEAST.py
+python multi-party-simulation/mimic/mimic_FEAST.py
 ```
 
 ### CFEAST:

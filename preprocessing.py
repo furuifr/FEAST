@@ -1,9 +1,11 @@
 from tokenize import String
+from matplotlib.pyplot import flag
 import numpy as np
 from numpy.core.numeric import NaN
 import pandas as pd
 from sklearn.datasets import load_boston
 from sklearn.model_selection import train_test_split
+import re
 
 
 def read_data(path='../dataset/avazu-ctr-prediction/train.csv'):
@@ -19,6 +21,8 @@ def getData(dataset_name, task=1):
         return getMimic()
     elif dataset_name=="census":
         return getCensus()
+    elif dataset_name=="nomao":
+        return getNomao()
 
 def getBoston():
     boston = load_boston()
@@ -37,7 +41,8 @@ def getMimic():
     return data
 
 def getCensus():
-    data = pd.read_csv('./dataset/census-income/census-income-clean-cut.csv')
+    data = pd.read_csv('./dataset/census/census-income-clean.csv')
+    data = (data-data.min())/(data.max()-data.min())
     return data
 
 def getPhysionet1():
@@ -55,6 +60,10 @@ def getPhysionet(task):
     data = train.iloc[:, 2:43]
     target = train.iloc[:, task]
     data = pd.concat([data, target], axis=1)
+    return data
+
+def getNomao():
+    data = pd.read_csv('./dataset/nomao/Nomao-clean.csv')
     return data
 
 def getScene():
@@ -105,9 +114,59 @@ def data_clean(path):
                 value_mapping[value] = index
                 index += 1
             df[col] = df[col].map(value_mapping)
-    df.to_csv('./dataset/census-income/census-income-clean.csv', index=None)
+    df.to_csv('./dataset/nomao/Nomao-clean.csv', index=None)
         
+def convert_str_to_num(df, col, values):
+    pat1 = "[-+]?[0-9]*\.[0-9]+"
+    pat2 = "\d+"
+    sum = 0
+    count = 0
+    for i in range(len(df[col])):
+        print(i)
+        # df[col][i]为数字或者字符串形的数字
+        if type(df[col][i]) == float or re.fullmatch(pat1, df[col][i]) is not None or re.fullmatch(pat2, df[col][i]) is not None:
+            sum += float(df[col][i])
+            count += 1
+    aver = sum/count
+    value_mapping = {}
+    for value in values:
+        # value为字符串，且不为数字
+        if type(value) == str and re.fullmatch(pat1, value) is None and re.fullmatch(pat2, value) is None:
+            value_mapping[value] = aver
+        else:
+            value_mapping[value] = float(value)
+    df[col] = df[col].map(value_mapping)
 
+def nomao_data_clean(path):
+    df = pd.read_csv(path)
+    # 首先删除空缺值较多的列以及无关列
+    # ...
+    # 将类别数据转换为数字类别
+    pat1 = "[-+]?[0-9]*\.[0-9]+"
+    pat2 = "\d+"
+    columns = df.columns.values.tolist()
+    for col in columns:
+        values_type = df[col].map(lambda x: type(x)).unique()
+        if str in values_type:
+            values = df[col].unique().tolist()
+            flag = False
+            for value in values:
+                # 有字符串形的数字
+                if type(value) == str and (re.fullmatch(pat1, value) is not None or re.fullmatch(pat2, value) is not None):
+                    convert_str_to_num(df, col, values)
+                    flag = True
+                    break
+            if flag:
+                continue
+            values.sort()
+            value_mapping = {}
+            index = 0
+            for value in values:
+                value_mapping[value] = index
+                index += 1
+            df[col] = df[col].map(value_mapping)
+    df.to_csv('./dataset/nomao/Nomao-clean.csv', index=None)
+        
 
 # 依据crosstab进行分层抽样，从而减少行的数量
 def sampling(data, target, sampling_method, bin, step, RANDOMSEED):
@@ -159,5 +218,7 @@ def getSamplingRow(data: pd.DataFrame, target: pd.DataFrame, sampling_method: St
     else:
         return list(data.iloc[:, 0])
 
+
 if __name__ == '__main__':
-    data_clean('./dataset/census-income/census-income-clean.csv')
+    # nomao_data_clean('./dataset/nomao/Nomao.csv')
+    data = pd.read_csv('./dataset/nomao/Nomao-clean.csv')

@@ -290,7 +290,7 @@ def calc_cond_MI_CMIM_pro10(data_trans, data_party_equi, target):
 
     res_min = np.array(res_min)
     res_min_rank = np.argsort(-res_min)
-    threshold = res_min[res_min_rank[int(len(res_min_rank)/2)]]/2
+    threshold = res_min[res_min_rank[int(len(res_min_rank)/2)]]/100
     # del_num = int(len(res_rank)*0.2)
     del_list = []
     for i in range(len(res_rank)):

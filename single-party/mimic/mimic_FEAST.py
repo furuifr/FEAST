@@ -65,7 +65,7 @@ if __name__ == '__main__':
     data_dsct = dsct(dsct_method, data.copy(), dsct_num)
 
     method = '_FEAST_'
-    subdir = '1'
+    subdir = 'mimic/CFEAST/1'
     isExists = os.path.exists(subdir)
     if not isExists:
         os.makedirs(subdir)

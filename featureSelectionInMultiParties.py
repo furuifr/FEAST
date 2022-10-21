@@ -388,6 +388,7 @@ def featureSelection(new_col_num, L, data_party, data_party_equi, target, target
     acc_res_fl_ratio_svc = []
     acc_res_fl_ratio_rfc = []
     acc_res_fl_ratio_xgbc = []
+    acc_res_fl_ratio_dnn = []
     cond_MI = [[] for _ in range(L)] # 用于每一轮，其他方针对active方的特征MI
     cond_MI_rank = [[] for _ in range(L)] # 用于每一轮，其他方针对active方的特征MI排序
     sumTime = 0
@@ -478,14 +479,16 @@ def featureSelection(new_col_num, L, data_party, data_party_equi, target, target
             data_sum_fl_ratio = data_party[i]
         else:
             data_sum_fl_ratio = pd.concat([data_sum_fl_ratio, data_party[i]], axis=1)
-            
-        # acc_res_fl_ratio.append(clf_cv(clf_name, data_sum_fl_ratio.copy().T.drop_duplicates().T, target))
-        acc_res_fl_ratio_logi.append(clf_cv('logi', data_sum_fl_ratio.copy().T.drop_duplicates().T, target_pred, RANDOMSEED))
-        acc_res_fl_ratio_svc.append(clf_cv('svc', data_sum_fl_ratio.copy().T.drop_duplicates().T, target_pred, RANDOMSEED))
-        acc_res_fl_ratio_rfc.append(clf_cv('rfc', data_sum_fl_ratio.copy().T.drop_duplicates().T, target_pred, RANDOMSEED))
-        acc_res_fl_ratio_xgbc.append(clf_cv('xgbc', data_sum_fl_ratio.copy().T.drop_duplicates().T, target_pred, RANDOMSEED))
-
+        
         new_col_num -= next_feature_num # 删除已选的个数
+        
+        # acc_res_fl_ratio.append(clf_cv(clf_name, data_sum_fl_ratio.copy().T.drop_duplicates().T, target))
+        if new_col_num==0 or i==L-1:
+            acc_res_fl_ratio_logi.append(clf_cv('logi', data_sum_fl_ratio.copy(), target_pred, RANDOMSEED))
+            # acc_res_fl_ratio_svc.append(clf_cv('svc', data_sum_fl_ratio.copy(), target_pred, RANDOMSEED))
+            acc_res_fl_ratio_rfc.append(clf_cv('rfc', data_sum_fl_ratio.copy(), target_pred, RANDOMSEED))
+            acc_res_fl_ratio_xgbc.append(clf_cv('xgbc', data_sum_fl_ratio.copy(), target_pred, RANDOMSEED))
+            acc_res_fl_ratio_dnn.append(clf_cv('dnn', data_sum_fl_ratio.copy(), target_pred, RANDOMSEED))
 
         end = time.time()
         sumTime += end-start
@@ -500,6 +503,7 @@ def featureSelection(new_col_num, L, data_party, data_party_equi, target, target
     print(acc_res_fl_ratio_svc)
     print(acc_res_fl_ratio_rfc)
     print(acc_res_fl_ratio_xgbc)
+    print(acc_res_fl_ratio_dnn)
 
     with open(subdir+'/logi_'+model+method+'.txt', 'w') as f:
         f.write(str(list(data_sum_fl_ratio.columns)))
@@ -509,13 +513,13 @@ def featureSelection(new_col_num, L, data_party, data_party_equi, target, target
         f.write(str(acc_res_fl_ratio_logi))
         f.write('\r\n')
 
-    with open(subdir+'/svc_'+model+method+'.txt', 'w') as f:
-        f.write(str(list(data_sum_fl_ratio.columns)))
-        f.write('\r\n')
-        f.write(str(list(map(lambda x: all_columns.index(x), list(data_sum_fl_ratio.columns)))))
-        f.write('\r\n')
-        f.write(str(acc_res_fl_ratio_svc))
-        f.write('\r\n')
+    # with open(subdir+'/svc_'+model+method+'.txt', 'w') as f:
+    #     f.write(str(list(data_sum_fl_ratio.columns)))
+    #     f.write('\r\n')
+    #     f.write(str(list(map(lambda x: all_columns.index(x), list(data_sum_fl_ratio.columns)))))
+    #     f.write('\r\n')
+    #     f.write(str(acc_res_fl_ratio_svc))
+    #     f.write('\r\n')
 
     with open(subdir+'/rfc_'+model+method+'.txt', 'w') as f:
         f.write(str(list(data_sum_fl_ratio.columns)))
@@ -531,6 +535,14 @@ def featureSelection(new_col_num, L, data_party, data_party_equi, target, target
         f.write(str(list(map(lambda x: all_columns.index(x), list(data_sum_fl_ratio.columns)))))
         f.write('\r\n')
         f.write(str(acc_res_fl_ratio_xgbc))
+        f.write('\r\n')
+    
+    with open(subdir+'/dnn_'+model+method+'.txt', 'w') as f:
+        f.write(str(list(data_sum_fl_ratio.columns)))
+        f.write('\r\n')
+        f.write(str(list(map(lambda x: all_columns.index(x), list(data_sum_fl_ratio.columns)))))
+        f.write('\r\n')
+        f.write(str(acc_res_fl_ratio_dnn))
         f.write('\r\n')
 
 # featureSelection_multirounds
@@ -744,10 +756,10 @@ def featureSelection_multirounds_del(new_col_num, L, data_party, data_party_equi
 
         data_sum_fl_ratio = pd.concat([data_sum_fl_ratio, data_party_selected[next_active+1]], axis=1)
         # acc_res_fl_ratio.append(clf_cv(clf_name, data_sum_fl_ratio.copy().T.drop_duplicates().T, data[target]))
-        acc_res_fl_ratio_logi.append(clf_cv('logi', data_sum_fl_ratio.copy().T.drop_duplicates().T, target))
-        acc_res_fl_ratio_svc.append(clf_cv('svc', data_sum_fl_ratio.copy().T.drop_duplicates().T, target))
-        acc_res_fl_ratio_rfc.append(clf_cv('rfc', data_sum_fl_ratio.copy().T.drop_duplicates().T, target))
-        acc_res_fl_ratio_xgbc.append(clf_cv('xgbc', data_sum_fl_ratio.copy().T.drop_duplicates().T, target))
+        acc_res_fl_ratio_logi.append(clf_cv('logi', data_sum_fl_ratio.copy(), target))
+        acc_res_fl_ratio_svc.append(clf_cv('svc', data_sum_fl_ratio.copy(), target))
+        acc_res_fl_ratio_rfc.append(clf_cv('rfc', data_sum_fl_ratio.copy(), target))
+        acc_res_fl_ratio_xgbc.append(clf_cv('xgbc', data_sum_fl_ratio.copy(), target))
 
         new_col_num -= next_feature_num # 删除已选的个数
         i += 1

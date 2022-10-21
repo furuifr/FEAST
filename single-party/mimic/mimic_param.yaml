@@ -4,7 +4,7 @@ target: 'future_readmit'
 # clf_name: 'svc'
 dsct_method: 'ratio'
 dsct_num: 8
-new_col_num: 30
+new_col_num: 48
 # a_col: [30,24,28,23,11,29,20,6]
 # b_col: [33,30,22,10,7,27,26,15,2,14,12,35,3,1]
 # c_col: [13,24,9,22,16,19,8,36,17,20,25,21,37,4]

@@ -14,7 +14,7 @@ import random
 import warnings;
 warnings.filterwarnings(action='once')
 warnings.filterwarnings("ignore")
-RANDOMSEED = 2
+RANDOMSEED = 1
 random.seed(RANDOMSEED)
 
 if __name__ == '__main__':
@@ -64,8 +64,8 @@ if __name__ == '__main__':
     data_dsct = dsct(dsct_method, data.copy(), dsct_num)
 
     method = '_FEAST_'
-    subdir = '2'
+    subdir = 'phys0/CFEAST/1'
     isExists = os.path.exists(subdir)
     if not isExists:
         os.makedirs(subdir)
-    featureSelection(new_col_num, data, data_dsct, target, method, dataset_name, dsct_method, all_columns, RANDOMSEED, subdir)
+    featureSelection(cols, data, data_dsct, target, method, dataset_name, dsct_method, all_columns, RANDOMSEED, subdir)
